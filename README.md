@@ -356,9 +356,8 @@ Frontend Development
    +
 ML Application Deployment
 
-Author
-
-Tejas
+Author:
+ Tejas
 
 Artificial Intelligence & Data Science
 
