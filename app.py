@@ -21,8 +21,8 @@ def predict():
 
     data = request.json
 
-    # Create the passenger data with the exact
-    # same 18 features used during training
+    # Create a DataFrame using the exact 18 features
+    # used during model training
     input_data = pd.DataFrame([{
         "Pclass": data["Pclass"],
         "Sex": data["Sex"],
@@ -46,8 +46,8 @@ def predict():
         "CabinDeck_Unknown": data["CabinDeck_Unknown"]
     }])
 
-
-    # These are the same columns we scaled during training
+    # These are the numerical features that were scaled
+    # during model training
     columns_to_scale = [
         "Pclass",
         "Age",
@@ -56,16 +56,13 @@ def predict():
         "Fare"
     ]
 
-
     # Apply the SAME scaler used during training
     input_data[columns_to_scale] = scaler.transform(
         input_data[columns_to_scale]
     )
 
-
     # Make prediction
     prediction = model.predict(input_data)
-
 
     return jsonify({
         "prediction": int(prediction[0])
