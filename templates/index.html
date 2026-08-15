@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Titanic AI — Survival Intelligence</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #020617;
+            --card: rgba(8, 18, 38, 0.72);
+            --border: rgba(148, 163, 184, 0.13);
+            --text: #f8fafc;
+            --muted: #8da0b8;
+            --blue: #38bdf8;
+            --cyan: #22d3ee;
+            --purple: #818cf8;
+            --green: #34d399;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(
+                    circle at 15% 15%,
+                    rgba(14, 116, 144, 0.22),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 85% 30%,
+                    rgba(79, 70, 229, 0.18),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(8, 145, 178, 0.15),
+                    transparent 38%
+                ),
+                var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* Animated background canvas */
+
+        #particles {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            opacity: 0.65;
+        }
+
+        .grid-background {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                linear-gradient(
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.025) 1px,
+                    transparent 1px
+                );
+            background-size: 60px 60px;
+            mask-image: linear-gradient(
+                to bottom,
+                black,
+                transparent 90%
+            );
+        }
+
+        /* Navigation */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 6%;
+            background: rgba(2, 6, 23, 0.7);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(56,189,248,0.25),
+                    rgba(129,140,248,0.25)
+                );
+            border: 1px solid rgba(56,189,248,0.2);
+            font-size: 20px;
+        }
+
+        .brand-name {
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 16px;
+        }
+
+        .brand-name span {
+            color: var(--blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border-radius: 30px;
+            background: rgba(52,211,153,0.07);
+            border: 1px solid rgba(52,211,153,0.16);
+            color: #86efac;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--green);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.45;
+                transform: scale(0.7);
+            }
+        }
+
+        /* Hero */
+
+        .hero {
+            width: min(1100px, 92%);
+            margin: auto;
+            padding: 100px 0 60px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 15px;
+            border-radius: 100px;
+            color: #7dd3fc;
+            background: rgba(56,189,248,0.07);
+            border: 1px solid rgba(56,189,248,0.18);
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 92px);
+            line-height: 0.95;
+            letter-spacing: -4px;
+            margin-bottom: 28px;
+            background:
+                linear-gradient(
+                    100deg,
+                    #ffffff 10%,
+                    #bae6fd 45%,
+                    #818cf8 85%
+                );
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero h1 span {
+            display: block;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: auto;
+            color: var(--muted);
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 32px;
+        }
+
+        .hero-btn {
+            padding: 13px 22px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .hero-btn.primary {
+            color: white;
+            background: linear-gradient(
+                135deg,
+                #0284c7,
+                #4f46e5
+            );
+            box-shadow: 0 12px 35px rgba(37,99,235,0.2);
+        }
+
+        .hero-btn.secondary {
+            color: #cbd5e1;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Main */
+
+        .container {
+            width: min(1120px, 92%);
+            margin: auto;
+            padding-bottom: 100px;
+        }
+
+        .glass {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            backdrop-filter: blur(22px);
+            box-shadow:
+                0 30px 100px rgba(0,0,0,0.35),
+                inset 0 1px rgba(255,255,255,0.04);
+        }
+
+        /* Prediction section */
+
+        .prediction-card {
+            padding: 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prediction-card::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            right: -120px;
+            top: -150px;
+            background: rgba(56,189,248,0.08);
+            filter: blur(70px);
+            border-radius: 50%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .section-header h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .model-chip {
+            padding: 9px 13px;
+            border-radius: 10px;
+            color: #a5b4fc;
+            background: rgba(129,140,248,0.08);
+            border: 1px solid rgba(129,140,248,0.15);
+            font-size: 12px;
+        }
+
+        /* Form */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 9px;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 15px 16px;
+            border: 1px solid #26364d;
+            border-radius: 13px;
+            outline: none;
+            background: rgba(3, 10, 24, 0.8);
+            color: white;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .field input::placeholder {
+            color: #475569;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--blue);
+            box-shadow:
+                0 0 0 3px rgba(56,189,248,0.08),
+                0 0 25px rgba(56,189,248,0.05);
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        /* Passenger live preview */
+
+        .preview {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .preview-title {
+            color: #64748b;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 13px;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .preview-item {
+            text-align: center;
+            padding: 12px 5px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.025);
+        }
+
+        .preview-item strong {
+            display: block;
+            color: #e2e8f0;
+            font-size: 15px;
+        }
+
+        .preview-item span {
+            color: #475569;
+            font-size: 10px;
+        }
+
+        /* Predict button */
+
+        .predict-btn {
+            position: relative;
+            width: 100%;
+            margin-top: 25px;
+            padding: 17px;
+            border: 0;
+            border-radius: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            background:
+                linear-gradient(
+                    100deg,
+                    #0284c7,
+                    #2563eb,
+                    #4f46e5
+                );
+            box-shadow:
+                0 15px 40px rgba(37,99,235,0.22);
+            overflow: hidden;
+            transition: 0.25s;
+        }
+
+        .predict-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.18),
+                transparent
+            );
+            transition: 0.7s;
+        }
+
+        .predict-btn:hover::before {
+            left: 130%;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 20px 50px rgba(37,99,235,0.35);
+        }
+
+        .predict-btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        /* Loading */
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 18px;
+            background: rgba(56,189,248,0.04);
+            border: 1px solid rgba(56,189,248,0.1);
+        }
+
+        .loader-ring {
+            width: 38px;
+            height: 38px;
+            margin: auto;
+            border: 3px solid rgba(56,189,248,0.15);
+            border-top-color: var(--blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading p {
+            margin-top: 12px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Result */
+
+        .result {
+            display: none;
+            margin-top: 25px;
+            padding: 35px 25px;
+            border-radius: 22px;
+            text-align: center;
+            animation: resultIn 0.55s ease;
+        }
+
+        @keyframes resultIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .result.survived {
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(52,211,153,0.12),
+                    transparent 65%
+                );
+            border: 1px solid rgba(52,211,153,0.2);
+        }
+
+        .result.died {
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(56,189,248,0.09),
+                    transparent 65%
+                );
+            border: 1px solid rgba(56,189,248,0.15);
+        }
+
+        .result-icon {
+            font-size: 54px;
+            margin-bottom: 12px;
+        }
+
+        .result h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .result.survived h2 {
+            color: #6ee7b7;
+        }
+
+        .result.died h2 {
+            color: #7dd3fc;
+        }
+
+        .result p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .again-btn {
+            margin-top: 20px;
+            padding: 10px 17px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.04);
+            color: #cbd5e1;
+            cursor: pointer;
+        }
+
+        /* Stats */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .stat {
+            padding: 25px 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 26px;
+            font-weight: 800;
+            color: #7dd3fc;
+            margin-bottom: 7px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        /* How it works */
+
+        .how {
+            margin-top: 18px;
+            padding: 36px;
+        }
+
+        .how h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .how-sub {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .pipeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .step {
+            position: relative;
+            padding: 22px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid var(--border);
+        }
+
+        .step-number {
+            color: #38bdf8;
+            font-size: 11px;
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .step p {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        footer span {
+            color: #38bdf8;
+        }
+
+        /* Responsive */
+
+        @media(max-width: 800px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .status {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 70px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pipeline {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .prediction-card,
+            .how {
+                padding: 24px;
+            }
+        }
+
+        @media(max-width: 500px) {
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="grid-background"></div>
+
+
+<!-- NAVBAR -->
+
+<nav>
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            ⚓
+        </div>
+
+        <div class="brand-name">
+            TITANIC<span>AI</span>
+        </div>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="#predict">Predict</a>
+        <a href="#model">Model</a>
+        <a href="#how">How It Works</a>
+
+    </div>
+
+
+    <div class="status">
+
+        <span class="status-dot"></span>
+
+        AI SYSTEM ONLINE
+
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="eyebrow">
+
+        ✦ MACHINE LEARNING INTELLIGENCE
+
+    </div>
+
+
+    <h1>
+
+        <span>Can AI Predict</span>
+
+        <span>Your Fate?</span>
+
+    </h1>
+
+
+    <p>
+
+        A machine-learning reconstruction of the Titanic.
+        Enter a passenger profile and let our trained K-Nearest
+        Neighbors model predict the outcome.
+
+    </p>
+
+
+    <div class="hero-actions">
+
+        <a href="#predict" class="hero-btn primary">
+
+            Start Prediction →
+
+        </a>
+
+
+        <a href="#how" class="hero-btn secondary">
+
+            Explore Model
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- MAIN -->
+
+<main class="container">
+
+
+    <!-- PREDICTION -->
+
+    <section class="glass prediction-card" id="predict">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>Passenger Intelligence</h2>
+
+                <p>
+                    Build a passenger profile for the model.
+                </p>
+
+            </div>
+
+
+            <div class="model-chip">
+
+                KNN · K = 11
+
+            </div>
+
+        </div>
+
+
+        <form id="predictionForm">
+
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label>Passenger Class</label>
+
+                    <select id="Pclass" required>
+
+                        <option value="">
+                            Select class
+                        </option>
+
+                        <option value="1">
+                            First Class
+                        </option>
+
+                        <option value="2">
+                            Second Class
+                        </option>
+
+                        <option value="3">
+                            Third Class
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Gender</label>
+
+                    <select id="Sex" required>
+
+                        <option value="">
+                            Select gender
+                        </option>
+
+                        <option value="0">
+                            Female
+                        </option>
+
+                        <option value="1">
+                            Male
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Age</label>
+
+                    <input
+                        type="number"
+                        id="Age"
+                        min="0"
+                        max="100"
+                        placeholder="Passenger age"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Ticket Fare</label>
+
+                    <input
+                        type="number"
+                        id="Fare"
+                        min="0"
+                        step="0.01"
+                        placeholder="e.g. 50"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Siblings / Spouses</label>
+
+                    <input
+                        type="number"
+                        id="SibSp"
+                        min="0"
+                        placeholder="e.g. 0"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Parents / Children</label>
+
+                    <input
+                        type="number"
+                        id="Parch"
+                        min="0"
+                        placeholder="e.g. 0"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Embarkation Port</label>
+
+                    <select id="Embarked" required>
+
+                        <option value="">
+                            Select port
+                        </option>
+
+                        <option value="C">
+                            Cherbourg
+                        </option>
+
+                        <option value="Q">
+                            Queenstown
+                        </option>
+
+                        <option value="S">
+                            Southampton
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Cabin Deck</label>
+
+                    <select id="CabinDeck" required>
+
+                        <option value="">
+                            Select deck
+                        </option>
+
+                        <option value="A">Deck A</option>
+                        <option value="B">Deck B</option>
+                        <option value="C">Deck C</option>
+                        <option value="D">Deck D</option>
+                        <option value="E">Deck E</option>
+                        <option value="F">Deck F</option>
+                        <option value="G">Deck G</option>
+                        <option value="T">Deck T</option>
+                        <option value="Unknown">
+                            Unknown
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- LIVE PREVIEW -->
+
+            <div class="preview">
+
+                <div class="preview-title">
+                    Live Passenger Profile
+                </div>
+
+
+                <div class="preview-grid">
+
+
+                    <div class="preview-item">
+
+                        <strong id="previewClass">
+                            —
+                        </strong>
+
+                        <span>CLASS</span>
+
+                    </div>
+
+
+                    <div class="preview-item">
+
+                        <strong id="previewAge">
+                            —
+                        </strong>
+
+                        <span>AGE</span>
+
+                    </div>
+
+
+                    <div class="preview-item">
+
+                        <strong id="previewFare">
+                            —
+                        </strong>
+
+                        <span>FARE</span>
+
+                    </div>
+
+
+                    <div class="preview-item">
+
+                        <strong id="previewGender">
+                            —
+                        </strong>
+
+                        <span>GENDER</span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="predict-btn"
+                id="predictButton"
+                type="submit">
+
+                ⚡ Analyze Passenger Fate
+
+            </button>
+
+
+        </form>
+
+
+        <!-- LOADING -->
+
+        <div class="loading" id="loading">
+
+            <div class="loader-ring"></div>
+
+            <p id="loadingText">
+                Initializing AI analysis...
+            </p>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div class="result" id="result">
+
+            <div
+                class="result-icon"
+                id="resultIcon">
+            </div>
+
+
+            <h2 id="resultTitle"></h2>
+
+
+            <p id="resultText"></p>
+
+
+            <button
+                class="again-btn"
+                onclick="resetPrediction()">
+
+                ↻ Analyze Another Passenger
+
+            </button>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="stats" id="model">
+
+
+        <div class="glass stat">
+
+            <span class="stat-value">
+                82.68%
+            </span>
+
+            <span class="stat-label">
+                TEST ACCURACY
+            </span>
+
+        </div>
+
+
+        <div class="glass stat">
+
+            <span class="stat-value">
+                11
+            </span>
+
+            <span class="stat-label">
+                OPTIMAL K
+            </span>
+
+        </div>
+
+
+        <div class="glass stat">
+
+            <span class="stat-value">
+                5-FOLD
+            </span>
+
+            <span class="stat-label">
+                CROSS VALIDATION
+            </span>
+
+        </div>
+
+
+        <div class="glass stat">
+
+            <span class="stat-value">
+                6+
+            </span>
+
+            <span class="stat-label">
+                ML MODELS TESTED
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+
+    <section
+        class="glass how"
+        id="how">
+
+
+        <h2>
+            From Passenger Data to Prediction
+        </h2>
+
+
+        <p class="how-sub">
+            The complete machine-learning pipeline behind Titanic AI.
+        </p>
+
+
+        <div class="pipeline">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Passenger Data
+                </h3>
+
+                <p>
+                    Enter demographic and travel
+                    information about the passenger.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Feature Processing
+                </h3>
+
+                <p>
+                    Passenger attributes are converted
+                    into model-ready numerical features.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    KNN Intelligence
+                </h3>
+
+                <p>
+                    The optimized KNN model compares
+                    the passenger with learned patterns.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <h3>
+                    Prediction
+                </h3>
+
+                <p>
+                    The model returns a survival prediction
+                    instantly through the Flask API.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    TITANIC<span>AI</span>
+
+    ·
+
+    Machine Learning Application
+
+    ·
+
+    Python + Flask + Scikit-Learn
+
+</footer>
+
+
+<script>
+
+
+/* =========================================
+   ANIMATED PARTICLES
+========================================= */
+
+const canvas =
+    document.getElementById("particles");
+
+const ctx =
+    canvas.getContext("2d");
+
+let particles = [];
+
+function resizeCanvas() {
+
+    canvas.width =
+        window.innerWidth;
+
+    canvas.height =
+        window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+for (let i = 0; i < 75; i++) {
+
+    particles.push({
+
+        x: Math.random() * window.innerWidth,
+
+        y: Math.random() * window.innerHeight,
+
+        size: Math.random() * 2 + 0.5,
+
+        speed:
+            Math.random() * 0.35 + 0.1,
+
+        opacity:
+            Math.random() * 0.5 + 0.1
+
+    });
+
+}
+
+
+function animateParticles() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    particles.forEach(p => {
+
+        p.y -= p.speed;
+
+
+        if (p.y < -10) {
+
+            p.y =
+                canvas.height + 10;
+
+            p.x =
+                Math.random() * canvas.width;
+
+        }
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            p.x,
+            p.y,
+            p.size,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fillStyle =
+            `rgba(125,211,252,${p.opacity})`;
+
+        ctx.fill();
+
+    });
+
+
+    requestAnimationFrame(
+        animateParticles
+    );
+
+}
+
+animateParticles();
+
+
+/* =========================================
+   LIVE PROFILE PREVIEW
+========================================= */
+
+const pclass =
+    document.getElementById("Pclass");
+
+const sex =
+    document.getElementById("Sex");
+
+const age =
+    document.getElementById("Age");
+
+const fare =
+    document.getElementById("Fare");
+
+
+function updatePreview() {
+
+    document.getElementById(
+        "previewClass"
+    ).innerText =
+        pclass.value
+            ? pclass.value + " Class"
+            : "—";
+
+
+    document.getElementById(
+        "previewAge"
+    ).innerText =
+        age.value
+            ? age.value
+            : "—";
+
+
+    document.getElementById(
+        "previewFare"
+    ).innerText =
+        fare.value
+            ? "£" + fare.value
+            : "—";
+
+
+    document.getElementById(
+        "previewGender"
+    ).innerText =
+        sex.value === "0"
+            ? "Female"
+            : sex.value === "1"
+                ? "Male"
+                : "—";
+
+}
+
+
+[
+    pclass,
+    sex,
+    age,
+    fare
+].forEach(element => {
+
+    element.addEventListener(
+        "input",
+        updatePreview
+    );
+
+    element.addEventListener(
+        "change",
+        updatePreview
+    );
+
+});
+
+
+/* =========================================
+   PREDICTION
+========================================= */
+
+document
+    .getElementById("predictionForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const button =
+                document.getElementById(
+                    "predictButton"
+                );
+
+            const loading =
+                document.getElementById(
+                    "loading"
+                );
+
+            const result =
+                document.getElementById(
+                    "result"
+                );
+
+
+            const embarked =
+                document.getElementById(
+                    "Embarked"
+                ).value;
+
+
+            const cabin =
+                document.getElementById(
+                    "CabinDeck"
+                ).value;
+
+
+            const data = {
+
+                Pclass:
+                    Number(pclass.value),
+
+                Sex:
+                    Number(sex.value),
+
+                Age:
+                    Number(age.value),
+
+                SibSp:
+                    Number(
+                        document.getElementById(
+                            "SibSp"
+                        ).value
+                    ),
+
+                Parch:
+                    Number(
+                        document.getElementById(
+                            "Parch"
+                        ).value
+                    ),
+
+                Fare:
+                    Number(fare.value),
+
+
+                Embarked_C:
+                    embarked === "C"
+                        ? 1
+                        : 0,
+
+                Embarked_Q:
+                    embarked === "Q"
+                        ? 1
+                        : 0,
+
+                Embarked_S:
+                    embarked === "S"
+                        ? 1
+                        : 0,
+
+
+                CabinDeck_A:
+                    cabin === "A"
+                        ? 1
+                        : 0,
+
+                CabinDeck_B:
+                    cabin === "B"
+                        ? 1
+                        : 0,
+
+                CabinDeck_C:
+                    cabin === "C"
+                        ? 1
+                        : 0,
+
+                CabinDeck_D:
+                    cabin === "D"
+                        ? 1
+                        : 0,
+
+                CabinDeck_E:
+                    cabin === "E"
+                        ? 1
+                        : 0,
+
+                CabinDeck_F:
+                    cabin === "F"
+                        ? 1
+                        : 0,
+
+                CabinDeck_G:
+                    cabin === "G"
+                        ? 1
+                        : 0,
+
+                CabinDeck_T:
+                    cabin === "T"
+                        ? 1
+                        : 0,
+
+                CabinDeck_Unknown:
+                    cabin === "Unknown"
+                        ? 1
+                        : 0
+
+            };
+
+
+            result.style.display =
+                "none";
+
+
+            loading.style.display =
+                "block";
+
+
+            button.disabled =
+                true;
+
+
+            button.innerText =
+                "AI Analysis Running...";
+
+
+            const messages = [
+
+                "Analyzing passenger profile...",
+
+                "Comparing learned patterns...",
+
+                "Running KNN inference...",
+
+                "Generating prediction..."
+
+            ];
+
+
+            let messageIndex = 0;
+
+
+            const messageTimer =
+                setInterval(() => {
+
+                    document.getElementById(
+                        "loadingText"
+                    ).innerText =
+                        messages[messageIndex];
+
+                    messageIndex =
+                        (messageIndex + 1)
+                        % messages.length;
+
+                }, 450);
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/predict",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(data)
+                        }
+                    );
+
+
+                const resultData =
+                    await response.json();
+
+
+                clearInterval(
+                    messageTimer
+                );
+
+
+                loading.style.display =
+                    "none";
+
+
+                result.style.display =
+                    "block";
+
+
+                if (
+                    resultData.prediction === 1
+                ) {
+
+                    result.className =
+                        "result survived";
+
+
+                    document.getElementById(
+                        "resultIcon"
+                    ).innerText =
+                        "🌟";
+
+
+                    document.getElementById(
+                        "resultTitle"
+                    ).innerText =
+                        "Passenger Survived";
+
+
+                    document.getElementById(
+                        "resultText"
+                    ).innerText =
+                        "The trained KNN model predicts a survival outcome for this passenger.";
+
+                }
+
+                else {
+
+                    result.className =
+                        "result died";
+
+
+                    document.getElementById(
+                        "resultIcon"
+                    ).innerText =
+                        "🌊";
+
+
+                    document.getElementById(
+                        "resultTitle"
+                    ).innerText =
+                        "Passenger Did Not Survive";
+
+
+                    document.getElementById(
+                        "resultText"
+                    ).innerText =
+                        "The trained KNN model predicts a non-survival outcome for this passenger.";
+
+                }
+
+
+            }
+
+            catch (error) {
+
+                clearInterval(
+                    messageTimer
+                );
+
+
+                loading.style.display =
+                    "none";
+
+
+                result.style.display =
+                    "block";
+
+
+                result.className =
+                    "result died";
+
+
+                document.getElementById(
+                    "resultIcon"
+                ).innerText =
+                    "⚠️";
+
+
+                document.getElementById(
+                    "resultTitle"
+                ).innerText =
+                    "Connection Error";
+
+
+                document.getElementById(
+                    "resultText"
+                ).innerText =
+                    "The prediction server could not be reached.";
+
+            }
+
+
+            button.disabled =
+                false;
+
+
+            button.innerText =
+                "⚡ Analyze Passenger Fate";
+
+        }
+    );
+
+
+/* =========================================
+   RESET
+========================================= */
+
+function resetPrediction() {
+
+    document
+        .getElementById(
+            "predictionForm"
+        )
+        .reset();
+
+
+    document.getElementById(
+        "result"
+    ).style.display =
+        "none";
+
+
+    updatePreview();
+
+
+    document
+        .getElementById(
+            "predict"
+        )
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+</script>
+
+</body>
+
+</html>
