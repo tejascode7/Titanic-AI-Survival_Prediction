@@ -37,7 +37,7 @@ Flask Backend
        ↓
 Interactive Web Interface
 
-Features
+##Features
 🤖 Machine-learning powered survival prediction
 🧠 K-Nearest Neighbors classifier
 🎯 Hyperparameter tuning using GridSearchCV
@@ -54,8 +54,7 @@ Features
 📈 Model performance statistics
 🧠 Machine-learning pipeline explanation
 
-Machine Learning
-Algorithm
+##Machine Learning Algorithm
 
 The final model uses:
 
@@ -71,7 +70,7 @@ n_neighbors = 11
 
 Five-fold cross-validation was used during hyperparameter selection.
 
-Model Performance:
+##Model Performance:
 
 The final tuned KNN model achieved the following results on the test dataset:
 | Metric    |  Score |
@@ -81,7 +80,7 @@ The final tuned KNN model achieved the following results on the test dataset:
 | Recall    | 72.97% |
 | F1 Score  | 77.70% |
 
-Best Configuration:
+##Best Configuration:
 | Parameter        | Value               |
 | ---------------- | ------------------- |
 | Algorithm        | K-Nearest Neighbors |
@@ -89,7 +88,7 @@ Best Configuration:
 | Cross Validation | 5-Fold              |
 | Preprocessing    | StandardScaler      |
 
-Features Used
+##Features Used
 
 The final model uses 18 processed features
 Passenger Features:
@@ -117,9 +116,9 @@ CabinDeck_T
 CabinDeck_Unknown
 The numerical features were standardized using StandardScaler.
 
-Technologies Used:
+##Technologies Used:
 
-Machine Learning:
+##Machine Learning:
 Python
 Pandas
 NumPy
@@ -129,21 +128,21 @@ GridSearchCV
 StandardScaler
 Joblib
 
-Backend:
+##Backend:
 Flask
 Python
 REST API
 
-Frontend:
+##Frontend:
 HTML5
 CSS3
 JavaScript
 
-User Interface:
+##User Interface:
 
 Titanic AI was designed as a modern AI-style application rather than a basic HTML form.
 
-The interface includes:
+##The interface includes:
 
 ⚓ Titanic AI branding
 🌊 Animated particle background
@@ -158,7 +157,7 @@ The interface includes:
 🧠 ML pipeline explanation
 📱 Responsive layout for smaller screens
 
-How It Works:
+##How It Works:
 The user enters information about a Titanic passenger, including:
 
 Passenger class
@@ -172,7 +171,7 @@ Cabin deck
 
 The frontend sends the information to the Flask /predict endpoint.
 
-The backend then:
+##The backend then:
 
 1.Receives the passenger information.
 2.Constructs the required feature set.
@@ -182,7 +181,7 @@ The backend then:
 6.Returns the prediction to the frontend.
 7.Displays the result using the interactive UI.
 
-Project Structure:
+##Project Structure:
 Titanic_ML_Project/
 │
 ├── app.py
@@ -196,7 +195,7 @@ Titanic_ML_Project/
 │
 └── README.md
 
-Important Files:
+##Important Files:
 | File                    | Purpose                          |
 | ----------------------- | -------------------------------- |
 | `app.py`                | Flask backend and prediction API |
@@ -205,17 +204,17 @@ Important Files:
 | `templates/index.html`  | Interactive frontend             |
 | `README.md`             | Project documentation            |
 
-Installation
-1. Clone the Repository:
+##Installation
+##1. Clone the Repository:
 git clone https://github.com/YOUR_USERNAME/Titanic_ML_Project.git
 
-2. Enter the Project Directory:
+##2. Enter the Project Directory:
 cd Titanic_ML_Project
 
-3. Install Dependencies:
+##3. Install Dependencies:
 pip install flask pandas numpy scikit-learn joblib
 
-Run the Application
+##Run the Application
 
 Start the Flask server:
 python app.py
@@ -226,7 +225,7 @@ The terminal should display:
 Open the application in your browser:
 http://127.0.0.1:5000
 
-Model Development
+##Model Development
 
 Several machine learning approaches were explored during development, including:
 
@@ -242,7 +241,7 @@ The final KNN model was selected after evaluating the models and performing hype
 The optimized model used:
 K = 11
 
-Model Serialization
+##Model Serialization
 After training, the final model was saved using Joblib:
 joblib.dump(best_knn, "titanic_knn_model.pkl")
 The scaler used during training was also saved:
@@ -250,7 +249,7 @@ joblib.dump(scaler, "titanic_scaler.pkl")
 
 This allows the Flask application to load the trained model and preprocessing object without retraining every time the application starts.
 
-Application Architecture:
+##Application Architecture:
                    TITANIC AI
                        │
                        ▼
@@ -282,12 +281,12 @@ Application Architecture:
               │  Survived / Not │
               └─────────────────┘
 
-Project Objective
+##Project Objective
 
 The main objective of this project was to build a complete end-to-end machine learning application.
 The project demonstrates how a machine learning model can move from:
 
-Dataset
+##Dataset
    ↓
 Data Analysis
    ↓
@@ -321,7 +320,7 @@ where:
 The dataset contains information about passengers such as class, gender, age, family relationships, fare, embarkation port, and cabin information.
 
 
-Future Improvements:
+##Future Improvements:
 Possible future improvements include:
 
 🌐 Deploy the application publicly
@@ -334,7 +333,7 @@ Possible future improvements include:
 🔐 Add production-grade API configuration
 📱 Further improve accessibility and mobile experience
 
-What This Project Demonstrates
+##What This Project Demonstrates
 This project demonstrates practical experience with:
 Python
    +
@@ -356,12 +355,12 @@ Frontend Development
    +
 ML Application Deployment
 
-Author:
+##Author:
  Tejas
 
 Artificial Intelligence & Data Science
 
-Project Highlights
+##Project Highlights
 
 A Titanic survival prediction model transformed into a complete interactive machine learning application.
 
@@ -379,7 +378,7 @@ Modern Frontend
         =
 End-to-End ML Application
 
-Disclaimer
+##Disclaimer
 
 This project is an educational machine learning application based on historical Titanic passenger data.
 
