@@ -37,7 +37,7 @@ Flask Backend
        ↓
 Interactive Web Interface
 
-##Features
+## Features
 🤖 Machine-learning powered survival prediction
 🧠 K-Nearest Neighbors classifier
 🎯 Hyperparameter tuning using GridSearchCV
@@ -54,7 +54,7 @@ Interactive Web Interface
 📈 Model performance statistics
 🧠 Machine-learning pipeline explanation
 
-##Machine Learning Algorithm
+## Machine Learning Algorithm
 
 The final model uses:
 
